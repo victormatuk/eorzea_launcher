@@ -1,0 +1,9 @@
+build/
+dist/
+py_env/
+0\ -\ COMPILE.lnk
+eorzea_launcher.config
+eorzea_launcher.spec
+launcher.spec
+launcherv1.py
+test.py
