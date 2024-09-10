@@ -38,7 +38,7 @@ Simple Final Fantasy XIV launcher that doesn’t require you to repeatedly enter
 6. I changed my password and/or OTP, what should I do?
    - Delete the eorzea_launcher.config configuration file and run the program again.
 7. My computer is acting up, clicking and typing randomly.
-   - The Launcher works through a timer, and the screen may not have fully loaded on your computer yet. You need to configure the times you want for each screen load. To do this, after completing the program's configuration step, open the eorzea_launcher.config file and set the variables starting with "waiting_time_to_..." in seconds, save the configuration file, and run the program again. Monitor the seconds in the executable to check for inconsistencies.
+   - The Launcher works through a timer, and the screen may not have fully loaded on your computer yet. You need to configure the times you want for each screen load. To do this, after completing the program's configuration step, open the eorzea_launcher.config file and set the variables starting with `waiting_time_to_...` in seconds, save the configuration file, and run the program again. Monitor the seconds in the executable to check for inconsistencies.
 
 ## FEATURES
 - [x] Steam Launcher support
@@ -47,6 +47,7 @@ Simple Final Fantasy XIV launcher that doesn’t require you to repeatedly enter
 - [ ] Password-only authentication (For players who have not set up OTP)
 - [ ] Support for Traditional Launcher
 - [ ] Add a GUI
+- [ ] Capture information about the processor, memory, and graphics card to generate the values for variables starting with `waiting_time_to_...`
 
 ## How to Use (Developers)
 1. Clone this repository

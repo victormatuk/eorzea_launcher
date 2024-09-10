@@ -36,7 +36,7 @@ Launcher simples de Final Fantasy 14 que não precisa ficar digitando login e ne
 6. Troquei minha senha e/ou meu OTP, o que faço?
    - Delete o arquivo de configuração eorzea_launcher.config e execute este programa novamente
 7. Meu computador está executando tudo errado, parece clicar e digitar aleatoriamente
-   - O Launcher funciona através de um timer e a tela pode não ter sido carregada no seu computador ainda, então você precisa configurar os tempos que quer para cada carregamento de tela. Para isso, após passar a etapa de configuração do programa, abra o arquivo eorzea_launcher.config e preencha em segundos as variáveis que começam com "waiting_time_to_...", salve o arquivo de configuração e execute este programa novamente. Acompanhe os segundos no executável para verificar inconsistências.
+   - O Launcher funciona através de um timer e a tela pode não ter sido carregada no seu computador ainda, então você precisa configurar os tempos que quer para cada carregamento de tela. Para isso, após passar a etapa de configuração do programa, abra o arquivo eorzea_launcher.config e preencha em segundos as variáveis que começam com `waiting_time_to_...`, salve o arquivo de configuração e execute este programa novamente. Acompanhe os segundos no executável para verificar inconsistências.
 
 ## Como utilizar (Desenvolvedores)
 1. Clone este repositório
