@@ -10,7 +10,7 @@ Simple Final Fantasy XIV launcher that doesn’t require you to repeatedly enter
 
 ## How to Use (Regular Users)
 1. Obtain the secret of your OTP
-2. Download the latest version of the executable from releases and follow the on-screen instructions.
+2. Download the latest version of the executable from [Releases](https://github.com/victormatuk/eorzea_launcher/releases/download/prod/eorzea_launcher.exe) and follow the on-screen instructions.
 
 ## FAQ
 1. What is an OTP?

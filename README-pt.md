@@ -8,7 +8,7 @@ Launcher simples de Final Fantasy 14 que não precisa ficar digitando login e ne
 
 ## Como utilizar (Usuários comuns)
 1. Obtenha o segredo do seu OTP
-2. Faça o download da última versão do executável em [Releases](https://github.com/victormatuk/eorzea_launcher/releases/tag/prod) e siga os passos na tela.
+2. Faça o download da última versão do executável em [Releases](https://github.com/victormatuk/eorzea_launcher/releases/download/prod/eorzea_launcher.exe) e siga os passos na tela.
 
 ## FAQ
 1. O que é um OTP?
