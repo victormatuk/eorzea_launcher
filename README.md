@@ -30,7 +30,7 @@ Simple Final Fantasy XIV launcher that doesn’t require you to repeatedly enter
    6. Permanently delete the downloaded file
       - ![Step](/images/step6.png)
 3. How to get my OTP Secret to insert into the Script? Configured in other authenticators
-   - Every OTP has a secret, you need to find a way to obtain this secret, either by backing up your OTP as shown above or by scanning the QR Code with your phone's camera and a QR Code reader. If you do it differently and want to contribute, please contact me so I can add your method here :)
+   - Every OTP has a secret, you need to find a way to obtain this secret, either by backing up your OTP as shown above or by scanning the QR Code with your phone's camera and a QR Code reader. If you do it differently and want to contribute, please contact me (matuk@antisec.com.br) so I can add your method here :)
 4. I don’t have OTP enabled on my account. How do I enable OTP?
    - Link to activate your OTP: [Square Enix Authenticator](https://www.square-enix-games.com/en_US/seaccount/otp/authenticator.html)
 5. I made a mistake typing my password and/or OTP code, what should I do?
@@ -40,10 +40,11 @@ Simple Final Fantasy XIV launcher that doesn’t require you to repeatedly enter
 7. My computer is acting up, clicking and typing randomly.
    - The Launcher works through a timer, and the screen may not have fully loaded on your computer yet. You need to configure the times you want for each screen load. To do this, after completing the program's configuration step, open the eorzea_launcher.config file and set the variables starting with `waiting_time_to_...` in seconds, save the configuration file, and run the program again. Monitor the seconds in the executable to check for inconsistencies.
 
-## FEATURES
+## ROADMAP
 - [x] Steam Launcher support
 - [x] Guide the user through setup using a "Wizard" model
 - [x] Multilingual support
+- [ ] Add a function to change the password saved in configuration file
 - [ ] Password-only authentication (For players who have not set up OTP)
 - [ ] Support for Traditional Launcher
 - [ ] Add a GUI
