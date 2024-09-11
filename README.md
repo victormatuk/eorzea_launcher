@@ -1,7 +1,7 @@
 # Eorzea Launcher (Final Fantasy XIV)
 [README em Português](README-pt.md)
 
-Simple Final Fantasy XIV launcher that doesn’t require you to repeatedly enter login credentials or OTP.
+Simple and Clean Final Fantasy XIV launcher that doesn’t require you to repeatedly enter login credentials or OTP.
 
 *If you don’t have OTP enabled on your account, as a cybersecurity professional, I highly recommend you do so :) *
 

@@ -246,7 +246,7 @@ def crystal_of_light():
              ░▒
 
 Welcome Warrior of Light to
-  [Eorzea Launcher V1.0]
+  [Eorzea Launcher V1.2.1]
 """
     return crystal
 def credits():

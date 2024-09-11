@@ -1,7 +1,7 @@
 # Eorzea Launcher (Final Fantasy XIV)
 
 
-Launcher simples de Final Fantasy 14 que não precisa ficar digitando login e nem OTP
+Launcher simples e limpo de Final Fantasy 14 que não precisa ficar digitando login e nem OTP
 
 *Se você não tem OTP ativado em sua conta, como profissional de cyber segurança, recomendo fortemente que o faça :)*
 
