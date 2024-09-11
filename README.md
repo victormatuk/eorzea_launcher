@@ -44,9 +44,9 @@ Simple Final Fantasy XIV launcher that doesn’t require you to repeatedly enter
 - [x] Steam Launcher support
 - [x] Guide the user through setup using a "Wizard" model
 - [x] Multilingual support
-- [ ] Add a function to change the password saved in configuration file
 - [ ] Password-only authentication (For players who have not set up OTP)
 - [ ] Support for Traditional Launcher
+- [ ] Add a function to change the password saved in configuration file
 - [ ] Add a GUI
 - [ ] Capture information about the processor, memory, and graphics card to generate the values for variables starting with `waiting_time_to_...`
 

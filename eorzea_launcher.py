@@ -22,6 +22,7 @@ import pyotp
 #Colocar mensagem que pode-se reiniiar o programa deletando o arquivo de configuração
 
 def signal_handler(sig, frame):
+    print(colorize(credits(), "BLUE"))
     sys.exit(0)
 signal.signal(signal.SIGINT, signal_handler)
 
@@ -102,8 +103,7 @@ def get_translations():
             "waiting_start_appears": "[!] Waiting for the [START] button to appear... [waiting_time_to_start_appears]",
             "selecting_start": "[!] Selecting [START]...",
             "waiting_char_to_load": "[!] Waiting for the character to load... [waiting_time_to_load_char]",
-            "start_the_game": "[!] Choosing the last played character...",
-            "end_script": "[!] Press any button to exit"
+            "start_the_game": "[!] Choosing the last played character..."
         },
         "Japanese": {
             "ask_password": "[?] ゲームのパスワードを入力してください: ",
@@ -130,8 +130,7 @@ def get_translations():
             "waiting_start_appears": "[!] [START] ボタンが表示されるのを待っています... [waiting_time_to_start_appears]",
             "selecting_start": "[!] [START] を選択中...",
             "waiting_char_to_load": "[!] キャラクターがロードされるのを待っています... [waiting_time_to_load_char]",
-            "start_the_game": "[!] 最後にプレイしたキャラクターを選択中...",
-            "end_script": "[!] 終了するには任意のキーを押してください"
+            "start_the_game": "[!] 最後にプレイしたキャラクターを選択中..."
         },
         "Portuguese": {
             "ask_password": "[?] Digite sua senha do jogo: ",
@@ -158,8 +157,7 @@ def get_translations():
             "waiting_start_appears": "[!] Aguardando o botão [START] aparecer... [waiting_time_to_start_appears]",
             "selecting_start": "[!] Selecionando [START]...",
             "waiting_char_to_load": "[!] Aguardando o personagem carregar... [waiting_time_to_load_char]",
-            "start_the_game": "[!] Escolhendo o último personagem jogado...",
-            "end_script": "[!] Aperte qualquer botão para encerrar"
+            "start_the_game": "[!] Escolhendo o último personagem jogado..."
         }
     }
 
@@ -431,8 +429,8 @@ def main():
         pyautogui.press('num0')
 
         print(colorize(credits(), "BLUE"))
-        print(colorize(display_message(language, "end_script"), "YELLOW"))
-
+        input(colorize("[!] Press any button to exit", "YELLOW"))
+        
 if __name__ == "__main__":
     main()
     
