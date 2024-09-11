@@ -19,32 +19,32 @@ Launcher simples de Final Fantasy 14 que não precisa ficar digitando login e ne
    1. Configurado no Google Authenticator do Chrome
       1.  Clique no ícone do Google Authenticator
       2.  Clique na engrenagem
-         - ![Step](/images/step1.png)
+         - ![Step](/images/step1.jpg)
       3. Clique em Backup
-         - ![Step](/images/step2.png)
+         - ![Step](/images/step2.jpg)
       3. Clique em Baixar o Arquivo de Backup
-         - ![Step](/images/step3.png)
+         - ![Step](/images/step3.jpg)
       4. Abra o arquivo baixado
-         - ![Step](/images/step4.png)
+         - ![Step](/images/step4.jpg)
       5. Copie o secret (este não é meu secret real)
-         - ![Step](/images/step5.png)
+         - ![Step](/images/step5.jpg)
       6. Delete permanentemente o arquivo baixado
-         - ![Step](/images/step6.png)
+         - ![Step](/images/step6.jpg)
    2. Diretamente da Mog Station
       1. Se você tiver OTP configurado em sua conta, primeiro será necessário removê-lo para reativá-lo.
       2. Vá para a Mog Station, faça login e clique em "One Time Password"
-         - ![Step](/images/mogstation/step1.png)
+         - ![Step](/images/mogstation/step1.jpg)
       3. Clique em Software Authenticator
-         - ![Step](/images/mogstation/step2.png)
+         - ![Step](/images/mogstation/step2.jpg)
       3. Clique em Registro do Software Authenticator
-         - ![Step](/images/mogstation/step3.png)
+         - ![Step](/images/mogstation/step3.jpg)
       4. O site exibirá um código QR. Você precisa escaneá-lo com seu aplicativo OTP, como Google Authenticator, Authy, etc., e também com um leitor de QR Code para obter o segredo OTP. Ao fazer isso, você verá algo semelhante à imagem abaixo. Copie a parte destacada e use para configurar esta ferramenta.
-         - ![Step](/images/mogstation/step4.png)
-         - ![Step](/images/step5.png)
+         - ![Step](/images/mogstation/step4.jpg)
+         - ![Step](/images/step5.jpg)
       5. Agora complete a configuração do seu OTP usando seu aplicativo OTP e inserindo o número na caixa de texto.
-         - ![Step](/images/mogstation/step5.png)
+         - ![Step](/images/mogstation/step5.jpg)
       6. Clique em Concluir para Finalizar
-         - ![Step](/images/mogstation/step6.png)
+         - ![Step](/images/mogstation/step6.jpg)
    3. Configurado em outros autenticadores
       - Todo OTP possui um secret, você deve arrumar uma maneira de obter este secret seja fazendo backup do seu OTP como mostrado acima ou lendo o QRCode com a câmera do celular e um leitor de QRCode. Se você fizer de outra maneira e quiser colaborar, entre em contato (matuk@antisec.com.br) para eu adicionar o seu método aqui :)
 3. Não tenho OTP ativado na minha conta. Como ativar meu OTP?
