@@ -60,6 +60,8 @@ Simple and Clean Final Fantasy XIV launcher that doesn’t require you to repeat
 - [x] Steam Launcher support
 - [x] Guide the user through setup using a "Wizard" model
 - [x] Multilingual support
+- [ ] If the game is already open the skip initial countdown timers about opening the game
+- [ ] Press enter to skip the countdown timer
 - [ ] Read QRCode from image to configure OTP
 - [ ] Password-only authentication (For players who have not set up OTP)
 - [ ] Support for Traditional Launcher
