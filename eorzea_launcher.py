@@ -1,9 +1,11 @@
+import keyboard
 import signal
 import sys
 import os
 import re
 import json
 import time
+import threading
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
@@ -21,6 +23,9 @@ import pyotp
 #Colocar mensagem que pode-se alterar o tempo de cada sleep no arquivo de configuração
 #Colocar mensagem que pode-se reiniiar o programa deletando o arquivo de configuração
 
+language = None
+data = None
+
 def signal_handler(sig, frame):
     print(colorize(credits(), "BLUE"))
     sys.exit(0)
@@ -30,6 +35,7 @@ def focus_window(title_substring):
     windows = gw.getWindowsWithTitle(title_substring)
     if windows:
         window = windows[0]
+        pyautogui.press('altleft')
         window.activate()
         return window
     return None
@@ -85,6 +91,7 @@ def get_translations():
             "ask_enc_password": "[?] Enter a password to securely store your game password and OTP Secret, or press Enter to proceed without a password: ",
             "ask_dec_password": "[?] Enter the password to decrypt your game password and OTP Secret: ",
             "ok_gogo" : "[OK] Configuration file, {configuration_file_name}, created in the Eorzea Launcher folder. Proceeding...",
+            "time_remaining": "Time Remaining: {time}. Press ENTER to skip.",
             "blank_password": "[!] You opted to proceed without a password.",
             "are_you_sure_proceed_with_blank_password": "[?] Are you sure you want to proceed without a password? (Type 'Y' to continue or 'N' to set a password): ",
             "proceed_with_blank_password": "[!] Proceeding with a blank password.",
@@ -112,6 +119,7 @@ def get_translations():
             "ask_enc_password": "[?] ゲームのパスワードと OTP Secret を安全に保存するためのパスワードを入力するか、パスワードなしで続行するには Enter キーを押してください: ",
             "ask_dec_password": "[?] ゲームのパスワードと OTP Secret を復号化するためのパスワードを入力してください: ",
             "ok_gogo" : "[OK] 設定ファイル、{configuration_file_name} が Eorzea Launcher フォルダーに作成されました。続行中...",
+            "time_remaining": "残り時間: {time}。スキップするにはENTERを押してください。",
             "blank_password": "[!] パスワードなしで続行することを選択しました。",
             "are_you_sure_proceed_with_blank_password": "[?] パスワードなしで続行してもよろしいですか？（'Y' を入力して続行するか、'N' を入力してパスワードを設定してください）: ",
             "proceed_with_blank_password": "[!] 空のパスワードで続行中。",
@@ -139,6 +147,7 @@ def get_translations():
             "ask_enc_password": "[?] Digite uma senha para armazenar sua senha do jogo e o OTP Secret de forma segura, ou pressione Enter para prosseguir sem senha: ",
             "ask_dec_password": "[?] Digite a senha para descriptografar sua senha do jogo e o OTP Secret: ",
             "ok_gogo" : "[OK] Arquivo de configuração, {configuration_file_name}, criado na pasta do Eorzea Launcher. Prosseguindo...",
+            "time_remaining": "Tempo Restante: {time}. Pressione ENTER para pular.",
             "blank_password": "[!] Você optou por prosseguir sem senha.",
             "are_you_sure_proceed_with_blank_password": "[?] Tem certeza de que deseja prosseguir sem senha? (Digite 'S' para continuar ou 'N' para definir uma senha): ",
             "proceed_with_blank_password": "[!] Prosseguindo com senha em branco.",
@@ -166,6 +175,7 @@ def display_message(language, message_key, **kwargs):
     messages = translations.get(language, {})
     message_template = messages.get(message_key, "Message not found.")
     return message_template.format(**kwargs)
+
 def colorize(text, color_code):
     if color_code == "RED":
         color_code = "31"
@@ -196,8 +206,8 @@ def check_strength_encryption_password(encryption_password):
     return True
 
 def openFileConfig(configuration_file_name):
+    global data
     can_proceed = False
-    data = None
     data_expected_fields = {"password", "secret", "language"}
     if os.path.exists(configuration_file_name):
         with open(configuration_file_name, 'r') as json_file:
@@ -215,13 +225,25 @@ def openFileConfig(configuration_file_name):
     return {"can_proceed": can_proceed, "data": data}
 
 def countdown_timer(seconds):
-    while seconds:
+    stop_countdown = False
+    def wait_for_enter():
+        nonlocal stop_countdown
+        try:
+            input()
+            stop_countdown = True
+        except EOFError:
+            stop_countdown = True
+    enter_thread = threading.Thread(target=wait_for_enter)
+    enter_thread.start()
+    while seconds and not stop_countdown:
         mins, secs = divmod(seconds, 60)
         timer = f'{mins:02d}:{secs:02d}'
-        print(f'\rTempo restante: {timer}', end='')
+        message = display_message(language, "time_remaining", time=timer)
+        len_message = len(message)
+        print(f'\r{colorize(message, "WHITE")}', end='')
         time.sleep(1)
         seconds -= 1
-    print(f'\r{" " * 20}', end='\r')
+    print(f'\r{" " * len_message}', end='\r')
 
 def crystal_of_light():
     crystal = """
@@ -260,7 +282,6 @@ Developer:
 
 Special Thanks:
     - (Wife, Tester) Pixoxa Xoxa, Primal, Famfrit (in-game name)
-    - (Free Company) Duty Failed, Primal, Famfrit (https://na.finalfantasyxiv.com/lodestone/community_finder/56f438e1bbdeaf5199fd240ccd4db564003ab7e2/)
 
 More informations: https://github.com/victormatuk/eorzea_launcher
 
@@ -268,7 +289,25 @@ More informations: https://github.com/victormatuk/eorzea_launcher
 """
     return credits
 
+def click(target, windows):
+    window_width, window_height = windows.width, windows.height
+    if target == 'password':
+        percent_x = 0.619
+        percent_y = 0.463
+    elif target == 'otp':
+        percent_x = 0.619
+        percent_y = 0.542            
+    password_field_x = windows.left + window_width * percent_x
+    password_field_y = windows.top + window_height * percent_y
+    pyautogui.moveTo(password_field_x, password_field_y)
+    pyautogui.click()
+    #limpar qualquer string
+    # pyautogui.press('end')
+    # for _ in range(100):
+        # pyautogui.press('backspace')
+
 def main():
+    global language
     #Welcome screen
     print(colorize(crystal_of_light(), "BLUE"))
 
@@ -350,31 +389,37 @@ def main():
         print(colorize(display_message(language, "waiting_time_to_load_the_script", waiting_time_to_load_the_script=data['waiting_time_to_load_the_script']), "YELLOW")) #Mensagem
         countdown_timer(data['waiting_time_to_load_the_script']) #Sleep
 
-        #Abre o link da Steam em X segundos
-        print(colorize(display_message(language, "waiting_time_to_open_the_game", waiting_time_to_open_the_game=data['waiting_time_to_open_the_game']), "YELLOW"))
-        steam_game_id = data['steam_game_id'] #ID do jogo na Steam
-        steam_url = f'steam://rungameid/{steam_game_id}'
-        subprocess.Popen(['start', steam_url], shell=True)
-        countdown_timer(data['waiting_time_to_open_the_game'])
+        #Abre o link da Steam em X segundos se ja nao estiver aberto
+        windows = focus_window(data['window_title'])
+        if windows is None:
+            print(colorize(display_message(language, "waiting_time_to_open_the_game", waiting_time_to_open_the_game=data['waiting_time_to_open_the_game']), "YELLOW"))
+            steam_game_id = data['steam_game_id'] #ID do jogo na Steam
+            steam_url = f'steam://rungameid/{steam_game_id}'
+            subprocess.Popen(['start', steam_url], shell=True)
+            countdown_timer(data['waiting_time_to_open_the_game'])
 
         #Foca na janela
-        focus_window(data['window_title'])
-        countdown_timer(1)
+        while True:
+            windows = focus_window(data['window_title'])
+            if windows is None:
+                print(colorize(display_message(language, "waiting_time_to_open_the_game", waiting_time_to_open_the_game=data['waiting_time_to_open_the_game']), "YELLOW"))
+                countdown_timer(1)
+            else:
+                break
 
         # Digita a senha
         print(colorize(display_message(language, "typing_the_password"), "YELLOW"))
         countdown_timer(1)
+        click('password', windows)
         pyautogui.write(password)
-
-        # Aguarda 1 segundo e dá tab para o campo OTP
-        countdown_timer(1)
-        pyautogui.press('tab')
 
         # Aguarda 1 segundo, gera e preenche o OTP
         print(colorize(display_message(language, "typing_the_otp"), "YELLOW"))
         totp = pyotp.TOTP(secret)
         otp = totp.now()
         countdown_timer(1)
+        # click('otp', windows)
+        pyautogui.press('tab')
         pyautogui.write(otp)
         
         # Aguarda 1 segundo e pula para o botão de autenticação
@@ -433,4 +478,3 @@ def main():
         
 if __name__ == "__main__":
     main()
-    

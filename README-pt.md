@@ -56,17 +56,6 @@ Launcher simples e limpo de Final Fantasy 14 que não precisa ficar digitando lo
 6. Meu computador está executando tudo errado, parece clicar e digitar aleatoriamente
    - O Launcher funciona através de um timer e a tela pode não ter sido carregada no seu computador ainda, então você precisa configurar os tempos que quer para cada carregamento de tela. Para isso, após passar a etapa de configuração do programa, abra o arquivo eorzea_launcher.config e preencha em segundos as variáveis que começam com `waiting_time_to_...`, salve o arquivo de configuração e execute este programa novamente. Acompanhe os segundos no executável para verificar inconsistências.
 
-## ROADMAP
-- [x] Steam Launcher support
-- [x] Guide the user through setup using a "Wizard" model
-- [x] Multilingual support
-- [ ] Read QRCode from image to configure OTP
-- [ ] Password-only authentication (For players who have not set up OTP)
-- [ ] Support for Traditional Launcher
-- [ ] Add a function to change the password saved in configuration file
-- [ ] Add a GUI
-- [ ] Capture information about the processor, memory, and graphics card to generate the values for variables starting with `waiting_time_to_...`
-
 ## Como utilizar (Desenvolvedores)
 1. Clone este repositório
 2. Faça o download dos requirements.txt
