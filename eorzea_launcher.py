@@ -268,7 +268,7 @@ def crystal_of_light():
              ░▒
 
 Welcome Warrior of Light to
-  [Eorzea Launcher V1.2.1]
+  [Eorzea Launcher V1.2.3]
 """
     return crystal
 def credits():
@@ -296,15 +296,18 @@ def click(target, windows):
         percent_y = 0.463
     elif target == 'otp':
         percent_x = 0.619
-        percent_y = 0.542            
+        percent_y = 0.542
+    elif target == 'login':
+        percent_x = 0.619
+        percent_y = 0.611
+    elif target == 'play':
+        percent_x = 0.619
+        percent_y = 0.611
     password_field_x = windows.left + window_width * percent_x
     password_field_y = windows.top + window_height * percent_y
     pyautogui.moveTo(password_field_x, password_field_y)
     pyautogui.click()
-    #limpar qualquer string
-    # pyautogui.press('end')
-    # for _ in range(100):
-        # pyautogui.press('backspace')
+        
 
 def main():
     global language
@@ -405,7 +408,14 @@ def main():
                 print(colorize(display_message(language, "waiting_time_to_open_the_game", waiting_time_to_open_the_game=data['waiting_time_to_open_the_game']), "YELLOW"))
                 countdown_timer(1)
             else:
+                countdown_timer(10)
                 break
+
+        #Se a janela está minimizada, restaura
+        if windows.isMinimized:
+            windows.restore()
+
+        windows = focus_window(data['window_title'])
 
         # Digita a senha
         print(colorize(display_message(language, "typing_the_password"), "YELLOW"))
@@ -418,23 +428,25 @@ def main():
         totp = pyotp.TOTP(secret)
         otp = totp.now()
         countdown_timer(1)
-        # click('otp', windows)
-        pyautogui.press('tab')
+        click('otp', windows)
+        # pyautogui.press('tab')
         pyautogui.write(otp)
         
         # Aguarda 1 segundo e pula para o botão de autenticação
-        countdown_timer(1)
-        pyautogui.press('tab')
+        # countdown_timer(1)
+        # pyautogui.press('tab')
 
-        # Aguarda 1 segundo e aperta o botão de autenticação
+        # Aguarda 1 segundo e aperta o botão de login
         print(colorize(display_message(language, "logging_in"), "YELLOW"))
         countdown_timer(1)
-        pyautogui.press('enter')
+        click('login', windows)
+        # pyautogui.press('enter')
 
         # Aguarda X segundos e aperta o botão play
         print(colorize(display_message(language, "play"), "YELLOW"))
         countdown_timer(data['waiting_time_to_load_the_play_button'])
-        pyautogui.press('enter')
+        click('play', windows)
+        # pyautogui.press('enter')
 
         # Aguarda X segundos para o jogo abrir
         print(colorize(display_message(language, "waiting_for_the_game_to_open"), "YELLOW"))
