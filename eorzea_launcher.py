@@ -2,6 +2,7 @@ import keyboard
 import signal
 import sys
 import os
+import ctypes
 import re
 import json
 import time
@@ -14,17 +15,27 @@ import pygetwindow as gw
 import pyautogui
 import subprocess
 import pyotp
+from colorama import init, Fore
 
-#validar OTP durante a inserção
-#revisar textos com chat GPT
-#Alterar o tema das strings para tema do jogo
-#Adicionar tradução para japones
-#Adicionar GUI
-#Colocar mensagem que pode-se alterar o tempo de cada sleep no arquivo de configuração
-#Colocar mensagem que pode-se reiniiar o programa deletando o arquivo de configuração
+init(autoreset=True)  # Inicializa colorama para lidar com códigos ANSI
 
 language = None
 data = None
+
+#valores default para o arquivo de configuração
+current_user = os.getlogin()  # Gets the current logged in user
+config_default = {
+    "steam_game_id": 39210,
+    "window_title": "FFXIVLauncher",
+    "waiting_time_to_load_the_script": 3,
+    "waiting_time_to_open_the_game": 25,
+    "waiting_time_to_load_the_play_button": 15,
+    "waiting_time_to_the_game_to_open": 15,
+    "waiting_time_to_start_appears": 20,
+    "waiting_time_to_load_char": 20,
+    "open_tataru": "false",
+    "tataru_local": f"C:\\Users\\{current_user}\\AppData\\Local\\TataruHelper\\TataruHelper.exe"
+}
 
 def signal_handler(sig, frame):
     print(colorize(credits(), "BLUE"))
@@ -85,6 +96,7 @@ def select_language():
 def get_translations():
     return {
         "English": {
+            "runas_admin": "[!] Re-running as admin: ",
             "ask_password": "[?] Enter your game password: ",
             "ask_secret": "[?] Enter your OTP Secret (not the OTP code): ",
             "instructions_enc_password": "[!] You can now create a password to securely protect your game password and OTP code. This password will be required to decrypt them whenever you run this program. If you prefer not to create a password, just press Enter to continue. Your game password and OTP code will still be encrypted, but using a blank password. Keep in mind that without this protection password, anyone using your computer can access the configuration file (which contains your password and OTP code), posing a security risk. We are not responsible for this.",
@@ -110,9 +122,11 @@ def get_translations():
             "waiting_start_appears": "[!] Waiting for the [START] button to appear... [waiting_time_to_start_appears]",
             "selecting_start": "[!] Selecting [START]...",
             "waiting_char_to_load": "[!] Waiting for the character to load... [waiting_time_to_load_char]",
-            "start_the_game": "[!] Choosing the last played character..."
+            "start_the_game": "[!] Choosing the last played character...",
+            "opening_tataru": "[!] Opening Tataru Helper"
         },
         "Japanese": {
+            "runas_admin": "[!] 管理者として再実行中: ",
             "ask_password": "[?] ゲームのパスワードを入力してください: ",
             "ask_secret": "[?] OTP Secret を入力してください（OTP コードではありません）: ",
             "instructions_enc_password": "[!] ゲームのパスワードと OTP コードを安全に保護するためのパスワードを作成できます。このパスワードは、プログラムを実行するたびにそれらを復号化するために要求されます。パスワードを作成しない場合は、Enter キーを押して続行してください。ゲームのパスワードと OTP コードは、空のパスワードを使用しても暗号化されます。この保護パスワードがないと、あなたのコンピュータを使用する誰でも設定ファイル（パスワードと OTP コードが含まれています）にアクセスできる可能性があり、セキュリティリスクを伴います。これについては責任を負いません。",
@@ -138,9 +152,11 @@ def get_translations():
             "waiting_start_appears": "[!] [START] ボタンが表示されるのを待っています... [waiting_time_to_start_appears]",
             "selecting_start": "[!] [START] を選択中...",
             "waiting_char_to_load": "[!] キャラクターがロードされるのを待っています... [waiting_time_to_load_char]",
-            "start_the_game": "[!] 最後にプレイしたキャラクターを選択中..."
+            "start_the_game": "[!] 最後にプレイしたキャラクターを選択中...",
+            "opening_tataru": "[!] タタルヘルパーを開いています"
         },
         "Portuguese": {
+            "runas_admin": "[!] Re-executando como administrador: ",
             "ask_password": "[?] Digite sua senha do jogo: ",
             "ask_secret": "[?] Digite seu OTP Secret (não o código OTP): ",
             "instructions_enc_password": "[!] Agora você pode criar uma senha para proteger sua senha do jogo e seu código OTP de forma segura. Essa senha será solicitada para descriptografá-los sempre que você executar este programa. Se preferir não criar uma senha, apenas pressione Enter para continuar. Sua senha do jogo e o código OTP ainda serão criptografados, mas utilizando uma senha em branco. Tenha em mente que, sem essa senha de proteção, qualquer pessoa que use seu computador poderá acessar o arquivo de configuração (que contém sua senha e o código OTP), o que representa um risco de segurança. Não nos responsabilizamos por isso.",
@@ -166,7 +182,8 @@ def get_translations():
             "waiting_start_appears": "[!] Aguardando o botão [START] aparecer... [waiting_time_to_start_appears]",
             "selecting_start": "[!] Selecionando [START]...",
             "waiting_char_to_load": "[!] Aguardando o personagem carregar... [waiting_time_to_load_char]",
-            "start_the_game": "[!] Escolhendo o último personagem jogado..."
+            "start_the_game": "[!] Escolhendo o último personagem jogado...",
+            "opening_tataru": "[!] Abrindo Tataru Helper"
         }
     }
 
@@ -178,17 +195,15 @@ def display_message(language, message_key, **kwargs):
 
 def colorize(text, color_code):
     if color_code == "RED":
-        color_code = "31"
+        return Fore.RED + text
     elif color_code == "GREEN":
-        color_code = "32"
+        return Fore.GREEN + text
     elif color_code == "YELLOW":
-        color_code = "33"
+        return Fore.YELLOW + text
     elif color_code == "BLUE":
-        color_code = "34"
+        return Fore.BLUE + text
     else:
         return text
-    return "\033[{}m{}\033[0m".format(color_code, text)
-    # print(f"\033[{color_code}m{text}\033[0m")
 
 def check_strength_encryption_password(encryption_password):
     if not encryption_password:
@@ -205,10 +220,14 @@ def check_strength_encryption_password(encryption_password):
         return False
     return True
 
+def updateFileConfig(configuration_file_name, data):
+    with open(configuration_file_name, 'w') as json_file:
+        json.dump(data, json_file, indent=4)
+
 def openFileConfig(configuration_file_name):
     global data
     can_proceed = False
-    data_expected_fields = {"password", "secret", "language"}
+    data_expected_fields = {"password", "secret", "language", "steam_game_id", "window_title", "waiting_time_to_load_the_script", "waiting_time_to_open_the_game", "waiting_time_to_load_the_play_button", "waiting_time_to_the_game_to_open", "waiting_time_to_start_appears", "waiting_time_to_load_char", "open_tataru", "tataru_local"}
     if os.path.exists(configuration_file_name):
         with open(configuration_file_name, 'r') as json_file:
             try:
@@ -217,8 +236,17 @@ def openFileConfig(configuration_file_name):
                 if not missing_fields:
                     can_proceed = True #O arquivo existe e todos os campos estão presentes, tudo OK prosseguir
                 else:
-                    print(colorize("[!!!!!!!!] The configuration file exists, but the following fields are missing: {}. It will be necessary to reconfigure the Eorzea Launcher.".format(missing_fields), "RED"))
-                    can_proceed = False
+                    if(missing_fields == {'open_tataru', 'tataru_local'}):
+                        global config_default
+                         # Adicionar os campos ausentes ao arquivo de configuração
+                        data['open_tataru'] = config_default['open_tataru']  # Valor padrão para open_tataru
+                        data['tataru_local'] = config_default['tataru_local']  # Valor padrão para tataru_local
+                        # Salvar as mudanças no arquivo
+                        updateFileConfig(configuration_file_name, data)
+                        can_proceed = True
+                    else:
+                        print(colorize("[!!!!!!!!] The configuration file exists, but the following fields are missing: {}. It will be necessary to reconfigure the Eorzea Launcher.".format(missing_fields), "RED"))
+                        can_proceed = False
             except json.JSONDecodeError:
                 print(colorize("[!!!!!!!!] The configuration file exists, but there is some error. It will be necessary to reconfigure the Eorzea Launcher.", "RED"))
                 can_proceed = False
@@ -268,7 +296,7 @@ def crystal_of_light():
              ░▒
 
 Welcome Warrior of Light to
-  [Eorzea Launcher V1.2.3]
+  [Eorzea Launcher V1.2.4]
 """
     return crystal
 def credits():
@@ -308,6 +336,12 @@ def click(target, windows):
     pyautogui.moveTo(password_field_x, password_field_y)
     pyautogui.click()
         
+#Rodar como admin
+def runasAdmin():
+    if not ctypes.windll.shell32.IsUserAnAdmin():
+        print(colorize(display_message(language, "runas_admin"), "RED"))
+        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, ' '.join([sys.argv[0]] + sys.argv[1:]), None, 1)
+        sys.exit()
 
 def main():
     global language
@@ -352,21 +386,23 @@ def main():
                         break
                     else:
                         print(colorize(display_message(language, "invalid_response_password"), "RED"))
+        global config_default
         data = {
             "password": encrypt_message(password, encryption_password),
             "secret": encrypt_message(secret, encryption_password),
             "language": language,
-            "steam_game_id": "39210",
-            "window_title": "FFXIVLauncher",
-            "waiting_time_to_load_the_script": 3,
-            "waiting_time_to_open_the_game": 25,
-            "waiting_time_to_load_the_play_button": 15,
-            "waiting_time_to_the_game_to_open": 15,
-            "waiting_time_to_start_appears": 20,
-            "waiting_time_to_load_char": 20
+            "steam_game_id": config_default['steam_game_id'],
+            "window_title": config_default['window_title'],
+            "waiting_time_to_load_the_script": config_default['waiting_time_to_load_the_script'],
+            "waiting_time_to_open_the_game": config_default['waiting_time_to_open_the_game'],
+            "waiting_time_to_load_the_play_button": config_default['waiting_time_to_load_the_play_button'],
+            "waiting_time_to_the_game_to_open": config_default['waiting_time_to_the_game_to_open'],
+            "waiting_time_to_start_appears": config_default['waiting_time_to_start_appears'],
+            "waiting_time_to_load_char": config_default['waiting_time_to_load_char'],
+            "open_tataru": config_default['open_tataru'],
+            "tataru_local": config_default['tataru_local']
         }
-        with open(configuration_file_name, 'w') as json_file:
-            json.dump(data, json_file, indent=4)
+        updateFileConfig(configuration_file_name, data)
         print(colorize(display_message(language, "ok_gogo", configuration_file_name=configuration_file_name), "GREEN"))
         can_proceed = True
     
@@ -374,6 +410,14 @@ def main():
         data = openFileConfig(configuration_file_name)['data'] #Carregar as configurações do arquivo
         language = data['language'] #carrega a linguagem
         print(colorize(display_message(language, "starting_script", configuration_file_name=configuration_file_name), "GREEN"))
+
+        #Verifica se é para abrir a Tataru
+        open_tataru = data['open_tataru']
+        if(open_tataru == "true"):
+            runasAdmin()
+            print(colorize(display_message(language, "opening_tataru"), "YELLOW")) #Mensagem
+            countdown_timer(1)
+            subprocess.run([data['tataru_local']])
 
         #Descriptografa a senha e o OTP
         passwordOTPOk = False
