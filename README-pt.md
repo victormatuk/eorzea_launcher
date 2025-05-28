@@ -46,7 +46,7 @@ Launcher simples e limpo de Final Fantasy 14 que não precisa ficar digitando lo
       6. Clique em Concluir para Finalizar
          - ![Step](/images/mogstation/step6.jpg)
    3. Configurado em outros autenticadores
-      - Todo OTP possui um secret, você deve arrumar uma maneira de obter este secret seja fazendo backup do seu OTP como mostrado acima ou lendo o QRCode com a câmera do celular e um leitor de QRCode. Se você fizer de outra maneira e quiser colaborar, entre em contato (matuk@antisec.com.br) para eu adicionar o seu método aqui :)
+      - Todo OTP possui um secret, você deve arrumar uma maneira de obter este secret seja fazendo backup do seu OTP como mostrado acima ou lendo o QRCode com a câmera do celular e um leitor de QRCode. Se você fizer de outra maneira e quiser colaborar, entre em contato para eu adicionar o seu método aqui :)
 3. Não tenho OTP ativado na minha conta. Como ativar meu OTP?
    - Link para ativar seu OTP: [Square Enix Authenticator](https://www.square-enix-games.com/en_US/seaccount/otp/authenticator.html)
 4. Errei ao digitar minha senha e/ou o segredo do meu OTP, o que faço?
