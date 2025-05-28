@@ -46,7 +46,7 @@ Simple and Clean Final Fantasy XIV launcher that doesn’t require you to repeat
       6. Click Done to Finish
          - ![Step](/images/mogstation/step6.jpg)
    3. Configured in other authenticators
-      - Every OTP has a secret, you need to find a way to obtain this secret, either by backing up your OTP as shown above or by scanning the QR Code with your phone's camera and a QR Code reader. If you do it differently and want to contribute, please contact me (matuk@antisec.com.br) so I can add your method here :)
+      - Every OTP has a secret, you need to find a way to obtain this secret, either by backing up your OTP as shown above or by scanning the QR Code with your phone's camera and a QR Code reader. If you do it differently and want to contribute, please contact me so I can add your method here :)
 3. I don’t have OTP enabled on my account. How do I enable OTP?
    - Link to activate your OTP: [Square Enix Authenticator](https://www.square-enix-games.com/en_US/seaccount/otp/authenticator.html)
 4. I made a mistake typing my password and/or OTP code, what should I do?
